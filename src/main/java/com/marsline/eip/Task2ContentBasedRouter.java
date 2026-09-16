@@ -13,15 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * TASK 2 - CONTENT-BASED ROUTER
- * -----------------------------
- * MARSLINE Scenario: Booking Intake -> jms:queue:marsline.booking.inbound -> Router -> LOCAL or PROVINCIAL
- *
- * The router looks INSIDE each booking (the "destination" field) and decides which queue it
- * should go to. Note: "Quezon" (the province) and "Quezon City" (Metro Manila) are treated as
- * different destinations on purpose.
- */
+
 public class Task2ContentBasedRouter {
 
     private static final String INBOUND_QUEUE = "marsline.booking.inbound";
@@ -33,7 +25,7 @@ public class Task2ContentBasedRouter {
             "Mandaluyong", "Pasay", "Paranaque", "Caloocan"
     };
 
-    // Records where each bookingId ACTUALLY ended up, filled in by the consumer routes below.
+  
     private final Map<String, String> actualRouting = new ConcurrentHashMap<>();
 
     public void run() throws Exception {
@@ -54,8 +46,7 @@ public class Task2ContentBasedRouter {
             @Override
             public void configure() {
 
-                // Parse the JSON body once and copy the fields we need into headers,
-                // so the .choice()/.when() below can make its decision.
+
                 from("jms:queue:" + INBOUND_QUEUE)
                         .routeId("Task2ContentBasedRouter")
                         .process(exchange -> {
@@ -76,7 +67,7 @@ public class Task2ContentBasedRouter {
                                 .to("jms:queue:" + PROVINCIAL_QUEUE)
                         .end();
 
-                // Two independent "processing systems" that just record what they actually received.
+
                 from("jms:queue:" + LOCAL_QUEUE)
                         .routeId("Task2LocalProcessingSystem")
                         .process(exchange -> {
@@ -97,7 +88,6 @@ public class Task2ContentBasedRouter {
 
         ProducerTemplate producer = context.createProducerTemplate();
 
-        // Test data required by the PDF: 5 bookings, expected 2 LOCAL / 3 PROVINCIAL.
         List<Booking> testBookings = List.of(
                 new Booking("BKG-2001", "Reiza Atienza", "Cabuyao", "Manila", "2026-09-12", "01A", 180.00),
                 new Booking("BKG-2002", "Marriah Asuncion", "Cabuyao", "Makati", "2026-09-12", "02B", 200.00),
