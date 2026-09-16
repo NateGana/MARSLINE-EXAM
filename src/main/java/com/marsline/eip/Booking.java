@@ -1,10 +1,5 @@
 package com.marsline.eip;
 
-/**
- * Simple data class representing one MARSLINE booking.
- * Jackson (ObjectMapper) turns this into/from JSON automatically,
- * as long as it has a no-argument constructor and normal getters/setters.
- */
 public class Booking {
 
     private String bookingId;
@@ -15,7 +10,6 @@ public class Booking {
     private String seat;
     private double fare;
 
-    // Jackson needs an empty constructor to build objects from JSON.
     public Booking() {
     }
 
