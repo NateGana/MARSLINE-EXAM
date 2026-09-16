@@ -5,15 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.camel.AggregationStrategy;
 import org.apache.camel.Exchange;
 
-/**
- * TASK 3 SUPPORT CLASS - tells Camel's Aggregator HOW to merge several messages
- * (one BOOKING part, one PAYMENT part, one TRIP part) that share the same bookingId
- * into a single BookingSummary object.
- *
- * Camel calls aggregate(...) once per incoming message for a given correlation key:
- *   - oldExchange is null the very first time (nothing aggregated yet).
- *   - after that, oldExchange holds the BookingSummary built so far.
- */
 public class BookingAggregationStrategy implements AggregationStrategy {
 
     private final ObjectMapper mapper = new ObjectMapper();
