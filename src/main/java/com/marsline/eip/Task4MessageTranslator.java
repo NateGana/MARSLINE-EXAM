@@ -17,16 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * TASK 4 - MESSAGE TRANSLATOR
- * ---------------------------
- * MARSLINE Scenario: Legacy Ticketing System (XML) -> Message Translator -> Modern MARSLINE CRM (JSON)
- *
- * The old ticketing machine only speaks XML. The new CRM only understands JSON. This class does a
- * REAL translation: it reads the XML tag-by-tag with the JDK's own DOM parser (no shortcuts, no
- * regex/string-replace tricks), fills a LegacyTicket object, then lets Jackson's ObjectMapper turn
- * that object into JSON.
- */
+
 public class Task4MessageTranslator {
 
     private static final String LEGACY_QUEUE = "marsline.ticket.legacy";
@@ -102,7 +93,6 @@ public class Task4MessageTranslator {
             waitedMs += 100;
         }
 
-        // Count how many of the 7 required fields actually made it into each JSON message.
         int totalFieldsFound = 0;
         int totalFieldsExpected = legacyXmlTickets.length * REQUIRED_FIELDS.length;
 
@@ -135,11 +125,7 @@ public class Task4MessageTranslator {
         return s != null && !s.isBlank();
     }
 
-    /**
-     * Reads the legacy XML with the JDK's real DOM parser (javax.xml.parsers.DocumentBuilder).
-     * DOCTYPE declarations are disallowed to protect against XXE (XML External Entity) attacks -
-     * this is the "XML security requirement" mentioned in the PDF.
-     */
+
     private LegacyTicket parseLegacyXml(String xml) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
