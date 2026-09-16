@@ -1,9 +1,5 @@
 package com.marsline.eip;
 
-/**
- * Holds the 7 fields read out of one legacy XML ticket record.
- * Jackson's ObjectMapper turns an instance of this class straight into JSON.
- */
 public class LegacyTicket {
 
     private String ticketId;
