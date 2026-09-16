@@ -1,18 +1,6 @@
 package com.marsline.eip;
 
-/**
- * Entry point for the whole project.
- *
- * This is what runs when you type:
- *   mvn compile exec:java -Dexec.args="task1"
- *   mvn compile exec:java -Dexec.args="task2"
- *   mvn compile exec:java -Dexec.args="task3"
- *   mvn compile exec:java -Dexec.args="task4"
- *   mvn compile exec:java -Dexec.args="task5"
- *
- * It just reads the first argument and calls the matching task's run() method.
- * Each task is fully self-contained in its own class/file.
- */
+
 public class MarslineEipApplication {
 
     public static void main(String[] args) throws Exception {
