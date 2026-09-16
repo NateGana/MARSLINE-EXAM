@@ -15,25 +15,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * TASK 5 - ERROR HANDLING + RETRY
- * -------------------------------
- * MARSLINE Scenario: Booking Request -> Backend (simulated outage) -> Retry -> Success OR Parking Lot
- *
- * The "Booking Backend" here is a small simulator: it is programmed to genuinely fail a set number
- * of times for each test booking, then behave normally. Camel's own redelivery machinery
- * (maximumRedeliveries) does the retrying - this is not a hand-written while-loop. Every failed
- * attempt is logged to an error queue as an audit trail. If retries run out, the booking is moved
- * to a parking-lot queue instead of being silently lost.
- */
+
 public class Task5ErrorChannelRetry {
 
     private static final String REQUEST_QUEUE = "marsline.booking.requests.task5";
     private static final String ERROR_QUEUE = "marsline.booking.errors";
     private static final String PARKING_LOT_QUEUE = "marsline.booking.parkinglot";
 
-    // How many times each test booking should fail BEFORE finally succeeding.
-    // BKG-5003 uses a huge number so it never succeeds within the 2 allowed redeliveries.
     private final Map<String, AtomicInteger> failuresRemaining = new ConcurrentHashMap<>(Map.of(
             "BKG-5001", new AtomicInteger(2),
             "BKG-5002", new AtomicInteger(1),
@@ -63,9 +51,6 @@ public class Task5ErrorChannelRetry {
             @Override
             public void configure() {
 
-                // Real Camel redelivery policy: try again automatically up to 2 more times
-                // (3 attempts total) with a short pause between attempts. If it still fails,
-                // the message is sent to the parking lot queue instead of being lost.
                 errorHandler(deadLetterChannel("jms:queue:" + PARKING_LOT_QUEUE)
                         .maximumRedeliveries(2)
                         .redeliveryDelay(200)
@@ -120,7 +105,6 @@ public class Task5ErrorChannelRetry {
             System.out.println();
             System.out.println("--- Sending " + bookingId + " ---");
             producer.sendBodyAndHeader("jms:queue:" + REQUEST_QUEUE, "{}", "bookingId", bookingId);
-            // Small pause so the console log for each booking's retries stays readable/in order.
             Thread.sleep(1500);
         }
 
