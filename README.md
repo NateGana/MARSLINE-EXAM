@@ -1,5 +1,10 @@
 # MARSLINE — Enterprise Integration Patterns (ITP103 Midterm Lab Exam)
 
+
+🌐 VIEW LIVE PAGE
+
+https://nategana.github.io/Marsline-System/
+
 ## 1. Project Description
 
 MARSLINE is a fictional provincial bus line (Cabuyao, Laguna) created for this exam. Its booking,
